@@ -29,7 +29,16 @@ def calculate_metrics(
     for event in events:
         if event["event_type"] == "hub_departure":
             number_of_trips += 1
-    return {"number_of_trips": number_of_trips}
+
+    total_time_taken = 0
+    for event in events:
+        if event["event_type"] == "delivery":
+            total_time_taken += event["time"]
+            
+    avg_time_taken = total_time_taken/number_of_trips
+    return {"number_of_trips": number_of_trips, "avg_time_taken": avg_time_taken}
+
+
 
 
 def main(argv: Optional[List[str]] = None) -> int:
