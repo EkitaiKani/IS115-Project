@@ -8,6 +8,8 @@ from typing import Any, Dict, List, Optional
 
 from simulator.loaders import day_input_paths
 
+from solution.policies.helpers import to_minutes
+
 
 def calculate_metrics(
     parcels: List[Dict[str, str]],
@@ -30,12 +32,23 @@ def calculate_metrics(
         if event["event_type"] == "hub_departure":
             number_of_trips += 1
 
-    total_time_taken = 0
+    T_END = 1080.0
+    total_delivery_time = 0
+    delivered = set()
+    parcel_time = {}
+    for parcel in parcels:
+        parcel_time[parcel["parcel_id"]] = parcel["arrival_time"]
     for event in events:
-        if event["event_type"] == "delivery":
-            total_time_taken += event["time"]
-            
-    avg_time_taken = total_time_taken/number_of_trips
+        if event["event_type"] == "delivery" and event["parcel_id"] in parcel_time:
+            total_delivery_time += event["time"] - to_minutes(parcel_time[event["parcel_id"]])
+            delivered.add(event["parcel_id"])
+
+    for id, time in parcel_time.items():
+        if id not in delivered:
+            total_delivery_time +=  T_END - to_minutes(time) 
+
+    avg_time_taken = total_delivery_time/len(parcel_time)
+
     return {"number_of_trips": number_of_trips, "avg_time_taken": avg_time_taken}
 
 
