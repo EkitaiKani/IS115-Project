@@ -1,0 +1,14 @@
+{
+  "avg_time_taken": 370.2396022584692,
+  "number_of_trips": 22,
+  "total_parcels": 797,
+  "delivered_count": 344,
+  "delivery_rate": 0.4316185696361355,
+  "on_time_count": 225,
+  "late_count": 119,
+  "early_count": 0,
+  "on_time_rate": 0.2823086574654956,
+  "avg_lateness": 182.59421008403365,
+  "total_km": 5184.564,
+  "km_per_delivered_parcel": 15.071406976744187
+}
