@@ -1,9 +1,6 @@
+from typing import List
+
 HUB = "HUB"   # ID of the depot in the distance table
-
-
-# converts time HH:MM into minutes
-def to_minutes(hhmm):
-    ...
 
 # converts time HH:MM into minutes
 def to_minutes(hhmm):
@@ -111,6 +108,35 @@ def tour_length(order, dist):
     # zip pairs each stop with the next one: (HUB, L1), (L1, L2), ..., (Lk, HUB)
     return sum(dist[a][b] for a, b in zip(stops, stops[1:]))
  
+def greedy_route(parcel, context):
+    distances = context["travel_distance"]
+    departure = context["current_time"] + context["departure_delay"]
+    max_distance = context["max_trip_distance_km"]
+    waiting = sorted(
+        (parcel_id for parcel_id, record in parcel.items() if record["vehicle_assigned"] is None),
+        key=lambda parcel_id: (parcel[parcel_id]["arrival_time"], parcel_id),
+    )
+    route: List[str] = []
+    load = 0.0
+    # km from the hub to the route's last stop, not counting the return leg.
+    travelled = 0.0
+    location = HUB
+    for parcel_id in waiting:
+        record = parcel[parcel_id]
+        if load + record["size"] > context["capacity"]:
+            continue
+        destination = record["delivery_location_id"]
+        trip_distance = travelled + distances[location][destination]
+        round_trip = trip_distance + distances[destination][HUB]
+        # At 60 km/h, km also equals travel time in minutes.
+        if round_trip > max_distance or departure + round_trip > context["return_cutoff"]:
+            continue
+        route.append(parcel_id)
+        load += record["size"]
+        travelled = trip_distance
+        location = destination
+    return route
+
  
 def nearest_neighbour(locations, dist):
     # Greedy: start at the HUB and always go to the closest unvisited location.
