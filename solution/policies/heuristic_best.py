@@ -1,4 +1,4 @@
-"""Greedy first-fit dispatch in arrival order, skipping parcels that break a hard constraint."""
+"""Greedy, nearest neighbour then two opt"""
 
 from typing import Dict, List
 
@@ -13,6 +13,7 @@ def dispatch(parcel: Dict[str, Parcel], context: SimulationContext) -> List[str]
     distances = context["travel_distance"]
     route = greedy_route(parcel, context)
 
+    # needs at least 3 stops
     if len(route) < 3:
         return route
     new = order_stops(route, parcel, distances)

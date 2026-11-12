@@ -156,6 +156,19 @@ def nearest_neighbour(locations, dist):
 
     return order
 
+def nearest_neighbour_parcels(route, parcel, context):
+    """Reorder a route's parcels: always go to the parcel whose stop is closest."""
+    dist = context["travel_distance"]
+    current = HUB
+    unvisited = list(route)
+    order = []
+    while unvisited:
+        nxt = min(unvisited,
+                  key=lambda pid: dist[current][parcel[pid]["delivery_location_id"]])
+        order.append(nxt)
+        unvisited.remove(nxt)
+        current = parcel[nxt]["delivery_location_id"]
+    return order
 
 def two_opt(order, dist):
     # Local search: reverse sections of the route while that makes it shorter.
@@ -178,7 +191,24 @@ def two_opt(order, dist):
                 break
 
     return order
- 
+
+def two_opt_parcels(route, parcel, context):
+    """2-opt on parcel IDs, scored by route_cost (sum of delivery times)."""
+    best = list(route)
+    best_cost = route_cost(best, parcel, context)
+    improved = True
+    while improved:
+        improved = False
+        for i in range(len(best) - 1):
+            for j in range(i + 1, len(best)):
+                candidate = best[:i] + best[i:j + 1][::-1] + best[j + 1:]
+                if not is_feasible(candidate, parcel, context):
+                    continue
+                cost = route_cost(candidate, parcel, context)
+                if cost < best_cost:          # strict, so ties cannot loop forever
+                    best, best_cost = candidate, cost
+                    improved = True
+    return best
  
 def order_stops(route, parcel, dist):
     # Reorder a trip's parcels to shorten the drive. Same parcels, new order.
