@@ -6,7 +6,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
 
-POLICIES = ["baseline", "heuristic_best", "two_opt", "nearest_neighbour"]     # add more policy folder names here
+POLICIES = ["baseline", "heuristic_best", "two_opt", "greedy_nn_2opt"]     # add more policy folder names here
 DAYS = [f"day_{i:03d}" for i in range(1, 21)]
 COMPARE = ["avg_time_taken", "delivery_rate", "delivery_cost_per_parcel", "number_of_trips"]
 FONT = "Arial"
