@@ -10,7 +10,6 @@ HUB = "HUB"
 
 def dispatch(parcel: Dict[str, Parcel], context: SimulationContext) -> List[str]:
     
-    distances = context["travel_distance"]
     route = greedy_route(parcel, context)
 
     new = nearest_neighbour_parcels(route, parcel, context)
