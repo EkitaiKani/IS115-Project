@@ -113,7 +113,7 @@ def greedy_route(parcel, context):
     departure = context["current_time"] + context["departure_delay"]
     max_distance = context["max_trip_distance_km"]
     waiting = sorted(
-        (parcel_id for parcel_id, record in parcel.items() if record["vehicle_assigned"] is None),
+        available_parcels(parcel),
         key=lambda parcel_id: (parcel[parcel_id]["arrival_time"], parcel_id),
     )
     route: List[str] = []
