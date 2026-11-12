@@ -9,6 +9,10 @@
   "early_count": 0,
   "on_time_rate": 0.2710997442455243,
   "avg_lateness": 199.03489285714264,
-  "total_km": 5197.404000000001,
-  "km_per_delivered_parcel": 16.041370370370373
+  "total_km": 5197.404,
+  "km_per_delivered_parcel": 16.041370370370373,
+  "energy_cost": 519.7404,
+  "driver_cost": 1942.468,
+  "total_cost": 2462.2084,
+  "delivery_cost_per_parcel": 7.599408641975309
 }
