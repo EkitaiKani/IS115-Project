@@ -8,7 +8,7 @@ from openpyxl.utils import get_column_letter
 
 POLICIES = ["baseline", "nearest_neighbour", "two_opt", "greedy_nn_2opt"]     # add more policy folder names here
 DAYS = [f"day_{i:03d}" for i in range(1, 21)]
-COMPARE = ["avg_time_taken", "delivery_rate", "delivery_cost_per_parcel", "number_of_trips", "km_per_delivered_parcel"]
+COMPARE = ["avg_time_taken", "delivery_rate", "on_time_rate", "number_of_trips", "km_per_delivered_parcel"]
 FONT = "Arial"
 
 # ---- load all metrics.json files ----
